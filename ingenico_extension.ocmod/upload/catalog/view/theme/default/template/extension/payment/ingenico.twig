@@ -1,0 +1,148 @@
+<script type="text/javascript" src="https://www.paynimo.com/Paynimocheckout/server/lib/checkout.js"></script>
+
+{# <script src="https://www.paynimo.com/paynimocheckout/client/lib/jquery.min.js" type="text/javascript"></script> #}
+
+<script type="text/javascript"><!--
+    $(document).ready(function() {
+            
+        $('#button-confirm').on('click', function() {
+
+            if (typeof $.pnCheckout != 'undefined'){
+            
+            if ({{enableExpressPay}}) {
+            var enableExpressPay = true;
+            } else {
+            var enableExpressPay = false;    
+            }
+
+            if ({{enableNewWindowFlow}}) {
+            var enableNewWindowFlow = true;
+            } else {
+            var enableNewWindowFlow = false;    
+            }
+
+            if ({{hideSavedInstruments}}) {
+            var hideSavedInstruments = true;
+            } else {
+            var hideSavedInstruments = false;    
+            }
+
+            if ({{enableInstrumentDeRegistration}}) {
+            var enableInstrumentDeRegistration = true;
+            } else {
+            var enableInstrumentDeRegistration = false;    
+            }
+
+            if ({{separateCardMode}}) {
+            var separateCardMode = true;
+            } else {
+            var separateCardMode = false;    
+            }
+
+            if ({{saveInstrument}}) {
+            var saveInstrument = true;
+            } else {
+            var saveInstrument = false;    
+            }
+            var configJson = {
+                    'tarCall': false,
+                    'features': {
+                        'showLoader': true,
+                        'showPGResponseMsg': true,
+                        'enableNewWindowFlow': enableNewWindowFlow, //for hybrid applications please disable this by passing false
+                        'enableExpressPay': enableExpressPay,
+                        'enableAbortResponse': false,
+                        'enableMerTxnDetails': true,
+                        'hideSavedInstruments': hideSavedInstruments,
+                        'enableInstrumentDeRegistration': enableInstrumentDeRegistration,
+                        'separateCardMode': separateCardMode
+                    },
+                    'consumerData': {
+                        'deviceId': 'WEBSH2',
+                        'token': '{{token}}',
+                        'returnUrl': '{{returnUrl}}',
+                        'responseHandler': handleResponse,
+                        'paymentMode': '{{paymentMode}}',
+                        'merchantLogoUrl': '{{merchant_logo_url}}',  //provided merchant logo will be displayed
+                        'merchantId': '{{mrctCode}}',
+                        'currency': '{{currency}}',
+                        'txnType': '{{txnType}}',
+                        'txnSubType': 'DEBIT',
+                        'checkoutElement': '{{checkoutElement}}',
+                        'saveInstrument':saveInstrument,
+                        'disclaimerMsg': '{{disclaimerMsg}}',
+                        'merchantMsg': '{{merchantMsg}}',
+                        'consumerId': '{{CustomerId}}',
+                        'paymentModeOrder': [
+                            '{{paymentModeOrder_1}}',
+                            '{{paymentModeOrder_2}}',
+                            '{{paymentModeOrder_3}}',
+                            '{{paymentModeOrder_4}}',
+                            '{{paymentModeOrder_5}}',
+                            '{{paymentModeOrder_6}}',
+                            '{{paymentModeOrder_7}}',
+                            '{{paymentModeOrder_8}}',
+                            '{{paymentModeOrder_9}}',
+                            '{{paymentModeOrder_10}}'
+                        ],
+                        'consumerMobileNo': '{{customerMobNumber}}',
+                        'consumerEmailId': '{{email}}',
+                        'txnId': '{{merchantTxnRefNumber}}',   //Unique merchant transaction ID
+                        'items': [{
+                            'itemId': '{{scheme}}',
+                            'amount': '{{Amount}}',
+                            'comAmt': '0'
+                        }],
+                        'cartDescription': '}{custname:{{fullname}}}{orderid:{{orderid}}',
+                        'merRefDetails': [
+                    {'name': 'Txn. Ref. ID', 'value': '{{merchantTxnRefNumber}}'}
+                ],
+                        'customStyle': {
+                            'PRIMARY_COLOR_CODE': '{{primary_color_code}}',   //merchant primary color code
+                            'SECONDARY_COLOR_CODE': '{{secondary_color_code}}',   //provide merchant's suitable color code
+                            'BUTTON_COLOR_CODE_1': '{{button_color_code_1}}',   //merchant's button background color code
+                            'BUTTON_COLOR_CODE_2': '{{button_color_code_2}}'   //provide merchant's suitable color code for button text
+                        }
+                    }
+                };
+                
+                $.pnCheckout(configJson);
+                if(configJson.features.enableNewWindowFlow){
+                    pnCheckoutShared.openNewWindow();
+                }
+
+                function handleResponse(res) {
+                if (typeof res != 'undefined' && typeof res.paymentMethod != 'undefined' && typeof res.paymentMethod.paymentTransaction != 'undefined' && typeof res.paymentMethod.paymentTransaction.statusCode != 'undefined' && res.paymentMethod.paymentTransaction.statusCode == '0300') {
+                    // success block
+                    let stringResponse = res.stringResponse;
+                            console.log(stringResponse);
+                            $("#response-string").val(stringResponse);
+                            $("#response-form").submit();
+                } else if (typeof res != 'undefined' && typeof res.paymentMethod != 'undefined' && typeof res.paymentMethod.paymentTransaction != 'undefined' && typeof res.paymentMethod.paymentTransaction.statusCode != 'undefined' && res.paymentMethod.paymentTransaction.statusCode == '0398') {
+                    // initiated block
+                } else {
+                    // error block
+                }
+            };
+        } else{
+            alert('Processing Data, Please try again');
+        }
+        });
+
+});
+//--></script>
+
+<div class="buttons">
+  <div class="pull-right">
+    <input type="button" value="{{ button_confirm }}" id="button-confirm" data-loading-text="{{ text_loading }}" class="btn btn-primary" />
+  </div>
+</div>
+<div id="ingenicopayment"></div>
+<form action="{{returnUrl_2}}" id="response-form" method="POST">
+<input type="hidden" name="msg" value="" id="response-string">
+</form>
+
+
+
+
+
