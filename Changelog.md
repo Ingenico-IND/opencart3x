@@ -1,4 +1,4 @@
-Ingenico Payment Gateway
+Worldline Payment Gateway
 
 Change log history:
 

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<modification>
+	<name>Worldline Payment Extension</name>
+	<code>worldline_payment_extension</code>
+	<version>1.0.0</version>
+	<author>Worldline Team</author>
+	<link>https://www.tecprocesssolution.com/proto/p2m/client/salt-based-documentation.htm#online</link>
+	<file path="admin/controller/common/column_left.php">
+    <operation>
+      <search><![CDATA[$sale = array();]]></search>
+      <add position="after"><![CDATA[
+     
+        $sale[] = array(
+					'name'	   => $this->language->get('text_verification'),
+					'href'     => $this->url->link('extension/payment/verification', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);
+		$sale[] = array(
+					'name'	   => $this->language->get('text_reconciliation'),
+					'href'     => $this->url->link('extension/payment/reconciliation', 'user_token=' . $this->session->data['user_token'], true),
+					'children' => array()		
+				);			  
+   
+      ]]></add>
+    </operation>
+  </file>  
+  
+  <file path="admin/language/en-gb/common/column_left.php">
+    <operation>
+      <search><![CDATA[// Text]]></search>
+      <add position="after"><![CDATA[
+        $_['text_verification']                  = 'Offline Verification';
+        $_['text_reconciliation']                  = 'Reconciliation';
+      ]]></add>
+    </operation>
+  </file> 
+</modification>
