@@ -1,3 +1,3 @@
 <?php
 // Text
-$_['text_title'] = 'Credit Card / Debit Card / Net Banking (Worldline)';
+$_['text_title'] = 'Cards / UPI / Netbanking / Wallets';
